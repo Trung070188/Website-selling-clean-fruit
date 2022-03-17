@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
+
 use App\Http\Requests\AddProductRequests;
 use App\Http\Requests;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Illuminate\support\Facades\Redirect;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Products;
 use Auth;
+use App\Models\Rating;
+use Illuminate\Support\Facades\DB ;
+
 if(!isset($_SESSION)) { session_start(); }
 
 class Product extends Controller
@@ -60,7 +63,7 @@ class Product extends Controller
             $get_name_image = $get_image->getClientOriginalName();
             $name_image = current(explode('.',$get_name_image));
             $new_image = $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
-            $get_image->move('public/upload/product',$new_image);
+            $get_image->move('upload/product',$new_image);
             $data['product_image'] = $new_image; 
             DB::table('tbl_product')->insert($data);
             Session::put('message','Thêm thành công');
@@ -132,7 +135,7 @@ class Product extends Controller
         $product = Products::find($product_id);
         $product_image = $product->product_image;
         if ($product_image) {
-            $path = 'public/upload/product/'.$product_image;//đường dẫn
+            $path = 'upload/product/'.$product_image;//đường dẫn
             unlink($path);//xóa hình ảnh bài viết
         }
         $product->delete();
@@ -150,6 +153,7 @@ class Product extends Controller
         ->join('tbl_brand_product','tbl_brand_product.brand_id','=','tbl_product.brand_id')->where('tbl_product.product_slug',$product_slug)->get();
         foreach ($chitiet_product as $key => $value) {
             $category_id =$value->category_id;
+
             //seo 
                 $meta_desc = $value->product_desc;
                 $meta_keywords = $value->product_slug;
@@ -165,7 +169,20 @@ class Product extends Controller
         $related_product = DB::table('tbl_product')
         ->join('tbl_category_product','tbl_category_product.category_id','=','tbl_product.category_id')
         ->join('tbl_brand_product','tbl_brand_product.brand_id','=','tbl_product.brand_id')
+        
         ->where('tbl_category_product.category_id',$category_id)->whereNotIn('tbl_product.product_slug',[$product_slug])->get();
-        return view('pages.product.chitiet_product')->with('category',$cate_product)->with('brand',$brand_product)->with('chitiet_product',$chitiet_product)->with('related_product',$related_product)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
+        $rating=Rating::where('product_id',$product_id)->avg('rating');
+        $rating=round($rating);
+       
+        return view('pages.product.chitiet_product')->with('category',$cate_product)->with('brand',$brand_product)->with('chitiet_product',$chitiet_product)->with('related_product',$related_product)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('rating',$rating);
+    }
+    public function insert_rating(Request $request)
+    {
+        $data=$request->all();
+        $rating=new Rating();
+        $rating->product_id=$data['product_id'];
+        $rating->rating=$data['index'];
+        $rating->save();
+        echo 'done';
     }
 }

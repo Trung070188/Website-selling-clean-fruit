@@ -60,7 +60,7 @@
           <div class="col-sm-7">
             <div class="fileinput fileinput-new text-center" data-provides="fileinput">
               <div class="fileinput-new thumbnail">
-                <img src="{{URL::to('upload/contact/'.$c->info_logo)}}" alt="...">
+                <img src="{{URL::to('public/upload/contact/'.$c->info_logo)}}" alt="...">
               </div>
               <div class="fileinput-preview fileinput-exists thumbnail"></div>
               <div>

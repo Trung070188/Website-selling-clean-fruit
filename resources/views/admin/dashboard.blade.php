@@ -1,4 +1,4 @@
- @extends('admin_layout')
+@extends('admin_layout')
  @section('admin_content')
                         <h3>{{__('Thống Kê Đơn Hàng Danh Số')}}</h3>
                           <form autocomplete="off">

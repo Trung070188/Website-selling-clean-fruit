@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests;
-use Session;
-use Illuminate\support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+
 session_start();
 use App\Models\Social; //sử dụng model Social
 use App\Models\Login; //sử dụng model Login
@@ -19,7 +20,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Posts;
 use App\Models\Products;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Socialite; //sử dụng Socialite
 use Carbon\Carbon;
 
@@ -109,47 +110,47 @@ class AdminController extends Controller
     	return Redirect::to('/admin');
     }
     //fb
-    public function login_facebook(){
-        return Socialite::driver('facebook')->redirect();
-    }
+    // public function login_facebook(){
+    //     return Socialite::driver('facebook')->redirect();
+    // }
 
-    public function callback_facebook(){
-        $provider = Socialite::driver('facebook')->user();
-        $account = Social::where('provider','facebook')->where('provider_user_id',$provider->getId())->first();
-        if($account){
-            //login in vao trang quan tri  
-            $account_name = Login::where('admin_id',$account->user)->first();
-            Session::put('admin_name',$account_name->admin_name);
-            Session::put('admin_id',$account_name->admin_id);
-            return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
-        }else{
+    // public function callback_facebook(){
+    //     $provider = Socialite::driver('facebook')->user();
+    //     $account = Social::where('provider','facebook')->where('provider_user_id',$provider->getId())->first();
+    //     if($account){
+    //         //login in vao trang quan tri  
+    //         $account_name = Login::where('admin_id',$account->user)->first();
+    //         Session::put('admin_name',$account_name->admin_name);
+    //         Session::put('admin_id',$account_name->admin_id);
+    //         return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
+    //     }else{
 
-            $admin_login = new Social([
-                'provider_user_id' => $provider->getId(),
-                'provider' => 'facebook'
-            ]);
+    //         $admin_login = new Social([
+    //             'provider_user_id' => $provider->getId(),
+    //             'provider' => 'facebook'
+    //         ]);
 
-            $orang = Login::where('admin_email',$provider->getEmail())->first();
+    //         $orang = Login::where('admin_email',$provider->getEmail())->first();
 
-            if(!$orang){
-                $orang = Login::create([
-                    'admin_name' => $provider->getName(),
-                    'admin_email' => $provider->getEmail(),
-                    'admin_password' => '',
-                    'admin_phone' => ''
+    //         if(!$orang){
+    //             $orang = Login::create([
+    //                 'admin_name' => $provider->getName(),
+    //                 'admin_email' => $provider->getEmail(),
+    //                 'admin_password' => '',
+    //                 'admin_phone' => ''
 
-                ]);
-            }
-            $admin_login->login()->associate($orang);
-            $admin_login->save();
+    //             ]);
+    //         }
+    //         $admin_login->login()->associate($orang);
+    //         $admin_login->save();
 
-            $account_name = Login::where('admin_name',$admin_login->user)->first();
+    //         $account_name = Login::where('admin_name',$admin_login->user)->first();
 
-            Session::put('admin_name',$admin_login->admin_name);
-             Session::put('admin_id',$$admin_login->admin_id);
-            return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
-        } 
-    }
+    //         Session::put('admin_name',$admin_login->admin_name);
+    //          Session::put('admin_id',$$admin_login->admin_id);
+    //         return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
+    //     } 
+    // }
 
     public function filter_by_date(Request $request){
         $data = $request ->all();

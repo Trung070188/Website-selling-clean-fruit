@@ -15,8 +15,8 @@
   <!-- CSS Files -->
   <link href="{{asset('backend/assets/css/material-dashboard.minf066.css?v=2.1.0')}}" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="{{asset('backend/assets/demo/demo.css')}}" rel="stylesheet" />  
-  <link rel="stylesheet" href="{{asset('backend/assets/css/bootstrap-wysihtml5.css')}}" />
+  <!-- <link href="{{asset('backend/assets/demo/demo.css')}}" rel="stylesheet" />  
+  <link rel="stylesheet" href="{{asset('backend/assets/css/bootstrap-wysihtml5.css')}}" /> -->
   {{-- datepicker --}}
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   {{-- end datepicker --}}
@@ -1150,12 +1150,12 @@
         element: 'donut',
         resize: true,
         colors: [
-          '#E0F7FA',
-          '#B2EBF2',
-          '#80DEEA',
-          '#4DD0E1',
-          '#26C6DA',
-          '#00BCD4'
+          '#FC6F03',
+          '#fce703',
+          '#adfc03',
+          '#03fc84',
+          '#03cefc',
+          '#ba03fc'
         ],
         // labelColor:"#cccccc", // text color
         // backgroundColor: '#333333', // border color

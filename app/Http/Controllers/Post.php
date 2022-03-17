@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests\PostRequests;
 use App\Http\Requests;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Illuminate\support\Facades\Redirect;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Posts;
 use App\Models\Cateblog;
 use App\Models\Brand;
 use App\Models\Category;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Controller
 {
@@ -50,7 +50,7 @@ class Post extends Controller
             $get_name_image = $get_image->getClientOriginalName(); // lấy tên của hình ảnh
             $name_image = current(explode('.',$get_name_image)); //
             $new_image = $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
-            $get_image->move('public/upload/post',$new_image);
+            $get_image->move('upload/post',$new_image);
             $post->post_image = $new_image;
             $post->save();
             Session::put('message','Thêm thành công');
@@ -72,7 +72,7 @@ class Post extends Controller
         $post = Posts::find($post_id);
         $post_image = $post->post_image;
         if ($post_image) {
-            $path = 'public/upload/post/'.$post_image;//đường dẫn
+            $path = 'upload/post/'.$post_image;//đường dẫn
             unlink($path);//xóa hình ảnh bài viết
         }
         $post->delete();
@@ -104,7 +104,7 @@ class Post extends Controller
             $get_name_image = $get_image->getClientOriginalName(); // lấy tên của hình ảnh
             $name_image = current(explode('.',$get_name_image)); //
             $new_image = $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
-            $get_image->move('public/upload/post',$new_image);
+            $get_image->move('upload/post',$new_image);
             $post->post_image = $new_image;
             $post->save();
             Session::put('message','Cập nhập thành công');
